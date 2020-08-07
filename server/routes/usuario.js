@@ -5,10 +5,11 @@ const _ = require('underscore');
 
 
 const Usuario = require('../models/usuario');
+const { verificaToken, verificaAdm } = require('../middlewares/autenticacion');
 
 
 //Obtener usuarios
-app.get('/usuario', function(req, res) {
+app.get('/usuario', verificaToken, (req, res) => {
 
     let desde = Number(req.query.desde) || 0;
     let limite = Number(req.query.limite) || 5;
@@ -43,7 +44,7 @@ app.get('/usuario', function(req, res) {
 
 
 //Registrar nuevo usuario
-app.post('/usuario', function(req, res) {
+app.post('/usuario', [verificaToken, verificaAdm], function(req, res) {
 
     let body = req.body;
 
@@ -75,7 +76,7 @@ app.post('/usuario', function(req, res) {
 
 
 //Actualizar usuario
-app.put('/usuario/:id', function(req, res) {
+app.put('/usuario/:id', [verificaToken, verificaAdm], function(req, res) {
 
     let id = req.params.id;
 
@@ -105,7 +106,7 @@ app.put('/usuario/:id', function(req, res) {
 
 
 //Elimina un usuario de la BD
-app.delete('/usuario/:id', function(req, res) {
+app.delete('/usuario/:id', [verificaToken, verificaAdm], function(req, res) {
 
     let id = req.params.id;
 
