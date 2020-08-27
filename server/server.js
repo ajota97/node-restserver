@@ -15,14 +15,29 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 
-//Llamando al index que contiene las rutas
-app.use(require('./routes/index'));
+//Llamando a las rutas user, upload, product y category
+app.use(require('./routes/user'));
+app.use(require('./routes/category'));
+app.use(require('./routes/product'));
+app.use(require('./routes/upload'));
+app.use(require('./routes/imagenes'));
+app.use(require('./routes/login'));
+
 
 //Habilitar la carpeta public
 app.use(express.static(path.resolve(__dirname, '../public')));
 
+//Configurar cabeceras y cors
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+    res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
+    next();
+});
 
 
+//Conectarse a mongoDB y usar las configuraciones de la carpeta config
 mongoose.connect(process.env.URLDB, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
