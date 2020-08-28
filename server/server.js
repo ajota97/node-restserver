@@ -7,6 +7,9 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const path = require('path');
 
+//Configurando el cors
+const cors = require('cors');
+app.use(cors());
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -26,16 +29,6 @@ app.use(require('./routes/login'));
 
 //Habilitar la carpeta public
 app.use(express.static(path.resolve(__dirname, '../public')));
-
-//Configurar cabeceras y cors
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-    res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
-    next();
-});
-
 
 //Conectarse a mongoDB y usar las configuraciones de la carpeta config
 mongoose.connect(process.env.URLDB, {
